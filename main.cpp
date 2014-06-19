@@ -155,7 +155,7 @@ Vector3             g_cameraBoundsMin;
 
 typedef std::map<std::string, GLuint> ModelTextures;
 ModelTextures       g_modelTextures;
-
+Vector3 direction;
 //-----------------------------------------------------------------------------
 // Functions Prototypes.
 //-----------------------------------------------------------------------------
@@ -668,7 +668,7 @@ void InitCamera()
     g_camera.setAcceleration(CAMERA_ACCELERATION);
     g_camera.setVelocity(CAMERA_VELOCITY);
 
-    ChangeCameraBehavior(Camera::CAMERA_BEHAVIOR_FLIGHT);
+    ChangeCameraBehavior(Camera::CAMERA_BEHAVIOR_SPECTATOR);
 
     Mouse::instance().hideCursor(true);
     Mouse::instance().setPosition(g_windowWidth / 2, g_windowHeight / 2);
@@ -998,7 +998,7 @@ void RenderFrame()
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
 
-    //glViewport(0, 0, g_windowWidth, g_windowHeight);
+    glViewport(0, 0, g_windowWidth, g_windowHeight);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     glMatrixMode(GL_PROJECTION);
@@ -1030,20 +1030,33 @@ void RenderFrame()
 		/**************************NEW************************/
 
 
-		glPopMatrix();
-		glViewport(0, 0, g_windowWidth/2, g_windowHeight);
-		glTranslated(0.0f, 0.2f, -0.5f);
-		glRotated(180.0f, 0.0f, 1.0f, 0.0f);
-		glRotated(-30.0f, 1.0f, 0.0f, 0.0f);
-		//gluPerspective();
-		g_camera.perspective(CAMERA_FOVX,
-        static_cast<float>(g_windowWidth) / (static_cast<float>(g_windowHeight)*2),
-        CAMERA_ZNEAR, CAMERA_ZFAR);
-        RenderModel(g_model);
 		glPushMatrix();
-		glViewport(g_windowWidth/2, 0, g_windowWidth, g_windowHeight);
-		glTranslated(0.0f, 0.1f, -0.8f);
+		//glViewport(0, 0, g_windowWidth/2, g_windowHeight);
+		
+		//gluPerspective();
+		/*g_camera.perspective(CAMERA_FOVX,
+        static_cast<float>(g_windowWidth) / (static_cast<float>(g_windowHeight)*2),
+        CAMERA_ZNEAR, CAMERA_ZFAR);*/
+		//gluLookAt(g_camera.getXAxis().x,);
+		/*Vector3 a = g_camera.getTarget();
+		if(rand() < 100){
+			int b= 1;
+		}*/
+		glLoadIdentity();
+		glTranslated(0.0f, -0.008f, -0.4f);
+		glRotated(180.0f, 0.0f, 1.0f, 0.0f);
+		glRotated(-5.0f, 1.0f, 0.0f, 0.0f);
+        RenderModel(g_model);
+		glPopMatrix();
+		/*glViewport(g_windowWidth/2, 0, g_windowWidth, g_windowHeight);
+		glTranslated(0.0f, 0.1f, -0.8f);*/
+		glPushMatrix();
+		glTranslated(0.0f, 0.008f, -0.4f);
+		//glRotated(180.0f, 0.0f, 1.0f, 0.0f);
+		glRotated(-5.0f, 1.0f, 0.0f, 0.0f);
+		glTranslated(0.0f, 0.05f, 0.0f);
 		RenderModel(g_model0);
+		glPopMatrix();
 
 		/**************************NEW************************/
 		
@@ -1213,10 +1226,18 @@ void RenderText()
             << " x:" << g_camera.getPosition().x
             << " y:" << g_camera.getPosition().y
             << " z:" << g_camera.getPosition().z << std::endl
+			<< "  Target:" 
+			<< " x:" << g_camera.getTarget().x
+			<< " y:" << g_camera.getTarget().y
+			<< " z:" << g_camera.getTarget().z << std::endl
             << "  Velocity:"
             << " x:" << g_camera.getCurrentVelocity().x
             << " y:" << g_camera.getCurrentVelocity().y
             << " z:" << g_camera.getCurrentVelocity().z << std::endl
+			<< "  direction;"
+			<< " x:" << direction.x
+            << " y:" << direction.y
+            << " z:" <<direction.z << std::endl
             << "  Behavior: " << pszCurrentBehavior << std::endl
             << "  Rotation speed: " << g_camera.getRotationSpeed() << std::endl
             << "  Orbit style: " << pszOrbitStyle << std::endl
@@ -1323,7 +1344,7 @@ void UpdateCamera(float elapsedTimeSec)
     float dx = 0.0f;
     float dy = 0.0f;
     float dz = 0.0f;
-    Vector3 direction;
+    
     Mouse &mouse = Mouse::instance();
 
     GetMovementDirection(direction);
@@ -1353,6 +1374,7 @@ void UpdateCamera(float elapsedTimeSec)
 
         direction.x = 0.0f; // ignore yaw motion when updating camera's velocity
         g_camera.updatePosition(direction, elapsedTimeSec);
+		//g_camera.setPosition();
         break;
 
     case Camera::CAMERA_BEHAVIOR_ORBIT:

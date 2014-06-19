@@ -89,6 +89,7 @@ public:
     CameraBehavior getBehavior() const;
     const Vector3 &getCurrentVelocity() const;
     const Vector3 &getPosition() const;
+	const Vector3 &getTarget() const;
     float getOrbitMinZoom() const;
     float getOrbitMaxZoom() const;
     float getOrbitOffsetDistance() const;
@@ -174,6 +175,10 @@ private:
 };
 
 //-----------------------------------------------------------------------------
+inline const Vector3 &Camera::getTarget() const
+{
+	return m_target;
+}
 
 inline const Vector3 &Camera::getAcceleration() const
 { return m_acceleration; }

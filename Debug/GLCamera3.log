@@ -1,4 +1,4 @@
-﻿生成启动时间为 6/12/2014 9:55:11 PM。
+﻿生成启动时间为 6/19/2014 4:58:56 PM。
      1>项目“C:\Users\hetong\Desktop\GLCamera3\GLCamera3.vcxproj”在节点 2 上(Build 个目标)。
      1>ClCompile:
          C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D _CRT_SECURE_NO_DEPRECATE /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt main.cpp
@@ -18,4 +18,4 @@
 
 生成成功。
 
-已用时间 00:00:01.79
+已用时间 00:00:02.45

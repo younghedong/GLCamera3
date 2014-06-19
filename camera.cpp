@@ -40,7 +40,7 @@ const Vector3 Camera::WORLD_ZAXIS(0.0f, 0.0f, 1.0f);
 
 Camera::Camera()
 {
-    m_behavior = CAMERA_BEHAVIOR_FLIGHT;
+    m_behavior = CAMERA_BEHAVIOR_SPECTATOR;
     m_preferTargetYAxisOrbiting = true;
     
     m_accumPitchDegrees = 0.0f;
