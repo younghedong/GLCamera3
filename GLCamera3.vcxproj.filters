@@ -28,6 +28,9 @@
     <ClCompile Include="WGL_ARB_multisample.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="plane.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="bitmap.h">
@@ -52,6 +55,9 @@
       <Filter>Include Files</Filter>
     </ClInclude>
     <ClInclude Include="model_obj.h">
+      <Filter>Include Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Plane.h">
       <Filter>Include Files</Filter>
     </ClInclude>
   </ItemGroup>

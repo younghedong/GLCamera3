@@ -101,6 +101,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mathlib.cpp" />
     <ClCompile Include="model_obj.cpp" />
+    <ClCompile Include="plane.cpp" />
     <ClCompile Include="WGL_ARB_multisample.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -111,6 +112,7 @@
     <ClInclude Include="input.h" />
     <ClInclude Include="mathlib.h" />
     <ClInclude Include="model_obj.h" />
+    <ClInclude Include="Plane.h" />
     <ClInclude Include="WGL_ARB_multisample.h" />
   </ItemGroup>
   <ItemGroup>

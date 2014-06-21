@@ -94,6 +94,7 @@
 #include "mathlib.h"
 #include "model_obj.h"
 #include <string>
+#include "Plane.h"
 
 //-----------------------------------------------------------------------------
 // Constants.
@@ -121,7 +122,7 @@ const float     CAMERA_SPEED_ORBIT_ROLL = 100.0f;
 
 const Vector3   CAMERA_ACCELERATION(4.0f, 4.0f, 4.0f);
 const Vector3   CAMERA_VELOCITY(1.0f, 1.0f, 1.0f);
-
+float a = 0.0f , b = 0.0f;
 //-----------------------------------------------------------------------------
 // Globals.
 //-----------------------------------------------------------------------------
@@ -156,6 +157,9 @@ Vector3             g_cameraBoundsMin;
 typedef std::map<std::string, GLuint> ModelTextures;
 ModelTextures       g_modelTextures;
 Vector3 direction;
+Vector3 player2_location;
+Plane player1;
+
 //-----------------------------------------------------------------------------
 // Functions Prototypes.
 //-----------------------------------------------------------------------------
@@ -192,11 +196,18 @@ void    UpdateCamera(float elapsedTimeSec);
 void    UpdateFrame(float elapsedTimeSec);
 void    UpdateFrameRate(float elapsedTimeSec);
 LRESULT CALLBACK WindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
+void	Player2Move(float x, float y, float z);
 
 //-----------------------------------------------------------------------------
 // Functions.
 //-----------------------------------------------------------------------------
 
+void Player2Move(float x, float y, float z)
+{
+	player2_location.x += x;
+	player2_location.y += y;
+	player2_location.z += z;
+}
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd)
 {
 #if defined _DEBUG
@@ -517,13 +528,42 @@ void GetMovementDirection(Vector3 &direction)
     static bool moveLeftPressed = false;
     static bool moveUpPressed = false;
     static bool moveDownPressed = false;
+	static bool player2_moveForwardsPressed = false;
+	static bool player2_moveBackwardsPressed = false;
 
     Vector3 velocity = g_camera.getCurrentVelocity();
     Keyboard &keyboard = Keyboard::instance();
 
     direction.set(0.0f, 0.0f, 0.0f);
-
-    if (keyboard.keyDown(Keyboard::KEY_W))
+	if (keyboard.keyDown(Keyboard::KEY_U))
+    {
+		player1.turnLeft();
+	}
+	if (keyboard.keyDown(Keyboard::KEY_O))
+    {
+		player1.turnRight();
+	}
+	if (keyboard.keyDown(Keyboard::KEY_UP))
+    {
+		player1.rotateUp();
+	}
+	if (keyboard.keyDown(Keyboard::KEY_DOWN))
+    {
+		player1.rotateDown();
+	}
+	if (keyboard.keyDown(Keyboard::KEY_LEFT))
+    {
+		player1.rotateLeft();
+	}
+	if (keyboard.keyDown(Keyboard::KEY_RIGHT))
+    {
+		player1.rotateRight();
+	}
+	if (keyboard.keyDown(Keyboard::KEY_I))
+    {
+		player1.move(0.0f, 0.0f, 0.001f);
+	}
+    /*if (keyboard.keyDown(Keyboard::KEY_W))
     {
         if (!moveForwardsPressed)
         {
@@ -611,7 +651,7 @@ void GetMovementDirection(Vector3 &direction)
     else
     {
         moveDownPressed = false;
-    }
+    }*/
 }
 
 bool Init()
@@ -668,7 +708,7 @@ void InitCamera()
     g_camera.setAcceleration(CAMERA_ACCELERATION);
     g_camera.setVelocity(CAMERA_VELOCITY);
 
-    ChangeCameraBehavior(Camera::CAMERA_BEHAVIOR_SPECTATOR);
+    ChangeCameraBehavior(Camera::CAMERA_BEHAVIOR_FLIGHT);
 
     Mouse::instance().hideCursor(true);
     Mouse::instance().setPosition(g_windowWidth / 2, g_windowHeight / 2);
@@ -1052,9 +1092,18 @@ void RenderFrame()
 		glTranslated(0.0f, 0.1f, -0.8f);*/
 		glPushMatrix();
 		glTranslated(0.0f, 0.008f, -0.4f);
-		//glRotated(180.0f, 0.0f, 1.0f, 0.0f);
-		glRotated(-5.0f, 1.0f, 0.0f, 0.0f);
-		glTranslated(0.0f, 0.05f, 0.0f);
+		glRotated(180.0f, 0.0f, 1.0f, 0.0f);
+		//glRotated(-5.0f, 1.0f, 0.0f, 0.0f);
+		glRotated(player1.getRotateX(), 1.0f, 0.0f, 0.0f);
+		glRotated(player1.getRotateZ(), 0.0f, 0.0f, 1.0f);
+		//glRotated(player1.getRotateRight(), 0.0f, 0.0f, 1.0f);
+		glRotated(player1.getRotateY(), 0.0f, 1.0f, 0.0f);
+		//glTranslated(player2_location.x, player2_location.y, player2_location.z
+		glTranslated(player1.getPosition().x, player1.getPosition().y, player1.getPosition().z);
+		gluLookAt(player1.getPosition().x, player1.getPosition().y, player1.getPosition().z+0.02f,
+			player1.getPosition().x, player1.getPosition().y, player1.getPosition().z,
+			0.0f, 1.0f, 0.0f);
+		//player2_location.z -= 0.001f;
 		RenderModel(g_model0);
 		glPopMatrix();
 
